@@ -35,7 +35,7 @@ public class ViewFriends extends HttpServlet {
 				String displayName = request.getParameter("display_name").toUpperCase();
 
 				PreparedStatement statment = connection.prepareStatement(
-						"SELECT u2.display_name "
+						"SELECT u2.display_name, u2.ipv4_address, u2.listening_port "
 						+ "FROM friend_list, user u1, user u2 "
 						+ "WHERE u1.display_name = ? "
 						+ "AND u1.user_id = friend_list.user_id "
@@ -45,7 +45,7 @@ public class ViewFriends extends HttpServlet {
 				ResultSet rs = statment.executeQuery();
 				printWriter.write(displayName + "'s Friends:\n");
 				while (rs.next()) {
-					printWriter.write("\t" + rs.getString(1) + "\n");
+					printWriter.write("\t" + rs.getString(1) + ", " + rs.getString(2) + ":" + rs.getString(3) + "\n");
 				}
 
 			} catch (SQLException e) {

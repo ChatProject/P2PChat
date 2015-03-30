@@ -1,9 +1,12 @@
 DROP TABLE user;
-DROP TABLE friends_list;
+DROP TABLE friend_list;
 
 CREATE TABLE user (
 	user_id INT AUTO_INCREMENT,
 	display_name varchar(20) NOT NULL UNIQUE,
+	ipv4_address char(15),
+	listening_port INT,
+	last_active TIMESTAMP,
 	PRIMARY KEY (user_id)
 );
 
@@ -15,12 +18,12 @@ CREATE TABLE friend_list (
 	FOREIGN KEY (friend_id) REFERENCES user(user_id)
 );
 
-INSERT INTO user (display_name) VALUES ('JAKE');
-INSERT INTO user (display_name) VALUES ('SAURIN');
-INSERT INTO user (display_name) VALUES ('JEFF');
-INSERT INTO user (display_name) VALUES ('SUPERMAN');
-INSERT INTO user (display_name) VALUES ('BATMAN');
-INSERT INTO user (display_name) VALUES ('SPIDERMAN');
+INSERT INTO user (display_name, ipv4_address, listening_port, last_active) VALUES ('JAKE', '10.0.0.100', 8000, NULL);
+INSERT INTO user (display_name, ipv4_address, listening_port, last_active) VALUES ('SAURIN', NULL, NULL, NULL);
+INSERT INTO user (display_name, ipv4_address, listening_port, last_active) VALUES ('JEFF', NULL, NULL, NULL);
+INSERT INTO user (display_name, ipv4_address, listening_port, last_active) VALUES ('SUPERMAN', NULL, NULL, NULL);
+INSERT INTO user (display_name, ipv4_address, listening_port, last_active) VALUES ('BATMAN', NULL, NULL, NULL);
+INSERT INTO user (display_name, ipv4_address, listening_port, last_active) VALUES ('SPIDERMAN', NULL, NULL, NULL);
 
 INSERT INTO friend_list VALUES (1, 2);
 INSERT INTO friend_list VALUES (1, 3);

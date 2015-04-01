@@ -13,14 +13,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/ViewFriends")
-public class ViewFriends extends HttpServlet {
+@WebServlet("/GetFriends")
+public class GetFriends extends HttpServlet {
 
 	private static final long serialVersionUID = 7048533897266949417L;
-
-	public ViewFriends() {
-		super();
-	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

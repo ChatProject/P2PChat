@@ -29,7 +29,6 @@ INSERT INTO friend_list VALUES (1, 2);
 INSERT INTO friend_list VALUES (1, 3);
 
 INSERT INTO friend_list VALUES (2, 1);
-INSERT INTO friend_list VALUES (2, 2);
 INSERT INTO friend_list VALUES (2, 3);
 INSERT INTO friend_list VALUES (2, 4);
 INSERT INTO friend_list VALUES (2, 5);

@@ -45,7 +45,7 @@ public class GetFriends extends HttpServlet {
 				ObjectMapper mapper = new ObjectMapper();
 				mapper.configure(Feature.AUTO_CLOSE_TARGET, false);
 				while (rs.next()) {
-					Friend f = new Friend(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getLong(4));
+					Friend f = new Friend(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getDate(4).getTime());
 					mapper.writeValue(printWriter, f);
 					printWriter.write("\n");
 				}

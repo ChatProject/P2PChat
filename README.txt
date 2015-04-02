@@ -1,9 +1,16 @@
-The is a simple example of using a java servlet to allow a client to retrieve 
-data from a database on a server.
+This is a web application that supports client Peer to Peer chat applications.
 
-In this project, index.html can be used to send a post request with a display 
-name to the ViewFriends servlet and the servlet will respond with the user's 
-friends.
+Requirements:
+	Java 7 or later
+	Maven 3 or later (if not using eclipse)
 
-We could easily write a java or android program that would do the same thing as
-index.html so the program could retrieve a list of friends.
+To run using maven:
+	Run the "run_linux.sh" or "run_windows.bat" script.
+	If you would like to create a war file and run the project from the war file use: mvn compile package tomcat7:run-war
+
+To run using eclipse:
+	Use the Java EE version of Eclipse. (or install the http://www.eclipse.org/m2e/ plugin.)
+	Import this project as an existing Maven project.
+	Run or Debug the project as a maven build.
+	
+The web server will run on http://localhost:80/P2PChat/

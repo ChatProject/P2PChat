@@ -1,4 +1,4 @@
-package com.jakecrane;
+package com.jakecrane.p2pchat;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -39,7 +39,6 @@ public class UpdateUser extends HttpServlet {
 			
 			statment.execute();
 			response.setStatus(HttpServletResponse.SC_OK);
-
 		} catch (SQLException e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			e.printStackTrace();

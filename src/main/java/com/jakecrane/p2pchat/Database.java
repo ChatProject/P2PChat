@@ -1,4 +1,4 @@
-package com.jakecrane;
+package com.jakecrane.p2pchat;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

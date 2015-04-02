@@ -1,4 +1,4 @@
-package com.jakecrane;
+package com.jakecrane.p2pchat;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -6,12 +6,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.JsonGenerator.Feature;
 
 @WebServlet("/GetFriends")
 public class GetFriends extends HttpServlet {
@@ -31,7 +35,7 @@ public class GetFriends extends HttpServlet {
 				String displayName = request.getParameter("display_name").toUpperCase();
 
 				PreparedStatement statment = connection.prepareStatement(
-						"SELECT u2.display_name, u2.ipv4_address, u2.listening_port "
+						"SELECT u2.display_name, u2.ipv4_address, u2.listening_port, u2.last_active "
 						+ "FROM friend_list, user u1, user u2 "
 						+ "WHERE u1.display_name = ? "
 						+ "AND u1.user_id = friend_list.user_id "
@@ -39,11 +43,14 @@ public class GetFriends extends HttpServlet {
 				statment.setString(1, displayName);
 
 				ResultSet rs = statment.executeQuery();
-				printWriter.write(displayName + "'s Friends:\n");
+				ObjectMapper mapper = new ObjectMapper();
+				mapper.configure(Feature.AUTO_CLOSE_TARGET, false);
 				while (rs.next()) {
-					printWriter.write("\t" + rs.getString(1) + ", " + rs.getString(2) + ":" + rs.getString(3) + "\n");
+					Friend f = new Friend(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getLong(4));
+					mapper.writeValue(printWriter, f);
+					printWriter.write("\n");
 				}
-
+				
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

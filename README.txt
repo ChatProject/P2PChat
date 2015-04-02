@@ -5,7 +5,7 @@ Requirements:
 	Maven 3 or later (if not using eclipse)
 
 To run using maven:
-	Run the "run_linux.sh" or "run_windows.bat" script.
+	Use: mvn compile tomcat7:run
 	If you would like to create a war file and run the project from the war file use: mvn compile package tomcat7:run-war
 
 To run using eclipse:

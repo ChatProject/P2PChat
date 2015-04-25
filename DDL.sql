@@ -4,6 +4,7 @@ DROP TABLE friend_list;
 CREATE TABLE user (
 	user_id INT AUTO_INCREMENT,
 	display_name varchar(20) NOT NULL UNIQUE,
+	password varchar(60) NOT NULL,
 	ipv4_address varchar(15),
 	listening_port INT,
 	last_active TIMESTAMP,

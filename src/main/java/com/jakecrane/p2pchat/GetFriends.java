@@ -31,24 +31,32 @@ public class GetFriends extends HttpServlet {
 					return;
 				}
 
-				String displayName = request.getParameter("display_name").toUpperCase();
+				String username = request.getParameter("username");
+				String password = request.getParameter("password");
+				
+				if (Database.userAndPassAreValid(connection, username, password)) {
+					PreparedStatement statment = connection.prepareStatement(
+							"SELECT u2.display_name, u2.ipv4_address, u2.listening_port, u2.last_active "
+									+ "FROM friend_list, user u1, user u2 "
+									+ "WHERE u1.display_name = ? "
+									+ "AND u1.user_id = friend_list.user_id "
+									+ "AND u2.user_id = friend_list.friend_id");
+					statment.setString(1, username);
 
-				PreparedStatement statment = connection.prepareStatement(
-						"SELECT u2.display_name, u2.ipv4_address, u2.listening_port, u2.last_active "
-						+ "FROM friend_list, user u1, user u2 "
-						+ "WHERE u1.display_name = ? "
-						+ "AND u1.user_id = friend_list.user_id "
-						+ "AND u2.user_id = friend_list.friend_id");
-				statment.setString(1, displayName);
-
-				ResultSet rs = statment.executeQuery();
-				ObjectMapper mapper = new ObjectMapper();
-				mapper.configure(Feature.AUTO_CLOSE_TARGET, false);
-				while (rs.next()) {
-					Friend f = new Friend(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getDate(4).getTime());
-					mapper.writeValue(printWriter, f);
-					printWriter.write("\n");
+					ResultSet rs = statment.executeQuery();
+					ObjectMapper mapper = new ObjectMapper();
+					mapper.configure(Feature.AUTO_CLOSE_TARGET, false);
+					while (rs.next()) {
+						Friend f = new Friend(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getDate(4).getTime());
+						mapper.writeValue(printWriter, f);
+						printWriter.write("\n");
+					}
+					response.setStatus(HttpServletResponse.SC_OK);
+				} else {
+					response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 				}
+				
+				
 				
 			} catch (SQLException e) {
 				e.printStackTrace();

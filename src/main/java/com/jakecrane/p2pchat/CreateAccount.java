@@ -12,10 +12,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/UpdateUser")
-public class UpdateUser extends HttpServlet {
+import org.mindrot.jbcrypt.BCrypt;
 
-	private static final long serialVersionUID = -7367097802572047490L;
+@WebServlet("/CreateAccount")
+public class CreateAccount extends HttpServlet {
+
+	private static final long serialVersionUID = -5863544838439665622L;
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try (Connection connection = Database.getConnection()) {
@@ -28,26 +30,23 @@ public class UpdateUser extends HttpServlet {
 			String password = request.getParameter("password");
 			int listeningPort = Integer.parseInt(request.getParameter("listening_port"));
 
-			if (Database.userAndPassAreValid(connection, username, password)) {
-				PreparedStatement statment = connection.prepareStatement(
-						"UPDATE user "
-								+ "SET ipv4_address = ?, listening_port = ?, last_active = ? "
-								+ "WHERE display_name = ?");
+			PreparedStatement statment = connection.prepareStatement(
+					"INSERT INTO user (display_name, password, ipv4_address, "
+							+ "listening_port, last_active) "
+							+ "VALUES (?, ?, ?, ?, ?)");
+			statment.setString(1, username);
+			statment.setString(2, BCrypt.hashpw(password, BCrypt.gensalt()));
+			statment.setString(3, request.getRemoteAddr());
+			statment.setInt(4, listeningPort);
+			statment.setDate(5, new Date(new java.util.Date().getTime()));
 
-				statment.setString(1, request.getRemoteAddr());
-				statment.setInt(2, listeningPort);
-				statment.setDate(3, new Date(new java.util.Date().getTime()));
-				statment.setString(4, username);
+			response.setStatus(HttpServletResponse.SC_OK);
 
-				statment.execute();
-				response.setStatus(HttpServletResponse.SC_OK);
-			} else {
-				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			}
 		} catch (SQLException e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			e.printStackTrace();
 		}
+		
 	}
 
 }

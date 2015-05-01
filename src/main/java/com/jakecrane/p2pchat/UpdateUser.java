@@ -2,9 +2,9 @@ package com.jakecrane.p2pchat;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -36,7 +36,7 @@ public class UpdateUser extends HttpServlet {
 
 				statment.setString(1, request.getRemoteAddr());
 				statment.setInt(2, listeningPort);
-				statment.setDate(3, new Date(new java.util.Date().getTime()));
+				statment.setTimestamp(3, new Timestamp(new java.util.Date().getTime()));
 				statment.setString(4, username);
 
 				statment.execute();

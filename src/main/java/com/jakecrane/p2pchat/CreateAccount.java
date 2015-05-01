@@ -2,9 +2,9 @@ package com.jakecrane.p2pchat;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -28,17 +28,15 @@ public class CreateAccount extends HttpServlet {
 
 			String username = request.getParameter("username");
 			String password = request.getParameter("password");
-			int listeningPort = Integer.parseInt(request.getParameter("listening_port"));
 
 			PreparedStatement statment = connection.prepareStatement(
-					"INSERT INTO user (display_name, password, ipv4_address, "
-							+ "listening_port, last_active) "
-							+ "VALUES (?, ?, ?, ?, ?)");
+					"INSERT INTO user (display_name, password, ipv4_address, last_active) VALUES (?, ?, ?, ?)");
 			statment.setString(1, username);
 			statment.setString(2, BCrypt.hashpw(password, BCrypt.gensalt()));
 			statment.setString(3, request.getRemoteAddr());
-			statment.setInt(4, listeningPort);
-			statment.setDate(5, new Date(new java.util.Date().getTime()));
+			statment.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
+			
+			statment.execute();
 
 			response.setStatus(HttpServletResponse.SC_OK);
 
